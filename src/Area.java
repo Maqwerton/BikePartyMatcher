@@ -1,4 +1,4 @@
-package during;
+
 
 public class Area {
 	public static final int norraF = 1;

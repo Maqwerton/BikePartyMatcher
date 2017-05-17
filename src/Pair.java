@@ -1,4 +1,3 @@
-package during;
 
 public class Pair {
 	private int id;
@@ -6,7 +5,7 @@ public class Pair {
 	private int group;
 	private int size;
 	
-	public Pair(int id, int area, int group, int size){
+	public Pair(int size, int id,  int group, int area){
 		this.id = id;
 		this.area = area;
 		this.group = group;
@@ -27,6 +26,10 @@ public class Pair {
 	
 	public int getSize(){
 		return size;
+	}
+
+	public String print() {
+		return ("size: " + size + " Id: " + id + " Group: " + group + " Area: " + area + "\n");
 	}
 
 }
