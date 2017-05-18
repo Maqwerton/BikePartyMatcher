@@ -11,12 +11,16 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		String filename = "deltagare.txt";
 		ArrayList<Pair> all = parser(filename);
-		ArrayList<Pair> main = all;
-		ArrayList<Pair> starters = getFirstOrLastDish(all);
-		ArrayList<Pair> desserts = getFirstOrLastDish(all);
-		for(int i = 0; i <= 3; i++){
+		ArrayList<Pair> main = new ArrayList<>();
+		int third = all.size()/3;
+        main.addAll(all);
+		ArrayList<Pair> starters = getFirstOrLastDish(main, third);
+		ArrayList<Pair> desserts = getFirstOrLastDish(main, third);
+		for(int i = 0; i < 3; i++){
             ArrayList<ArrayList<Pair>> finished = match(starters, main, desserts);
-            System.out.println(finished);
+            for(ArrayList<Pair> p : finished){
+                System.out.print(p + "\n");
+            }
         }
 		//System.out.println(all.size());
 		//for (int i = 0; i < all.size(); i++) {
@@ -29,33 +33,46 @@ public class Main {
 													ArrayList<Pair> desserts) {
 		Random rand = new Random();
 		ArrayList<ArrayList<Pair>> matches = new ArrayList<ArrayList<Pair>>();
-		while(starters.size() != 0){
-		    int select = rand.nextInt(starters.size());
+		ArrayList<Pair> starterCopy = new ArrayList();
+		starterCopy.addAll(starters);
+        ArrayList<Pair> mainCopy = new ArrayList();
+        mainCopy.addAll(main);
+        ArrayList<Pair> dessertCopy = new ArrayList<>();
+        dessertCopy.addAll(desserts);
+		while(starterCopy.size() != 0){
+		    int selectStart = rand.nextInt(starterCopy.size());
+		    int selectMain = rand.nextInt(starterCopy.size());
+		    int selectDessert = rand.nextInt(dessertCopy.size());
             ArrayList<Pair> current = new ArrayList<Pair>();
-            current.add(starters.get(select));
-            current.add(main.get(select));
-		    current.add(desserts.get(select));
-		    starters.remove(select);
-		    main.remove(select);
-		    desserts.remove(select);
+            current.add(starterCopy.get(selectStart));
+            current.add(mainCopy.get(selectMain));
+		    current.add(dessertCopy.get(selectDessert));
+		    starterCopy.remove(selectStart);
+		    mainCopy.remove(selectMain);
+		    dessertCopy.remove(selectDessert);
 		    matches.add(current);
         }
 		return matches;
 	}
 
-	public static ArrayList<Pair> getFirstOrLastDish(ArrayList<Pair> all) {
+	public static ArrayList<Pair> getFirstOrLastDish(ArrayList<Pair> all, int third) {
 		Random rand = new Random();
 		ArrayList<Pair> pairs = new ArrayList<Pair>();
-		int third = all.size() / 3;
 		ArrayList<Pair> norraF = getNorraF(all);
 		for (int i = 0; i < third; i++) {
 			Pair selected = new Pair(2, 6932857,3586,56283);
 			if (norraF.size() != 0) {
+			    int k = 0;
 				do {
+				    k++;
 					selected = norraF.get(rand.nextInt(norraF.size()));
+					if(k > 100){
+					    selected = all.get(rand.nextInt(all.size()));
+                    }
 				} while (selected.getSize() == 3);
 
 				pairs.add(selected);
+				norraF.remove(selected);
 				all.remove(selected);
 			} else {
 				do {
@@ -96,10 +113,10 @@ public class Main {
 
 		while ((currentLine = br.readLine()) != null) {
 				parts = currentLine.split(",");
-				group = Integer.parseInt(parts[0]);
+				group = Integer.parseInt(parts[2]);
 				id = Integer.parseInt(parts[1]);
-				area = Integer.parseInt(parts[2]);
-				size = Integer.parseInt(parts[3]);
+				area = Integer.parseInt(parts[3]);
+				size = Integer.parseInt(parts[0]);
 				all.add(new Pair(size, id, group, area));
 		}
 		return all;

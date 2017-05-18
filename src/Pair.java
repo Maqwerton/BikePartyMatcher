@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class Pair {
 	private int id;
@@ -28,8 +29,12 @@ public class Pair {
 		return size;
 	}
 
-	public String print() {
-		return ("size: " + size + " Id: " + id + " Group: " + group + " Area: " + area + "\n");
+	//public String toString() {
+		//return ("size: " + size + " Id: " + id + " Group: " + group + " Area: " + area);
+	//}
+
+	public String toString() {
+		return (id + " " + group + " " + area);
 	}
 
 }
